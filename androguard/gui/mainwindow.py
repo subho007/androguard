@@ -11,14 +11,6 @@ from androguard.gui.helpers import class2func
 
 import os
 
-class CustomTabBar(QtGui.QTabBar):
-    '''Subclass QTabBar to implement middle-click closing of tabs'''
-
-    def mouseReleaseEvent(self, event):
-        if event.button() == QtCore.Qt.MidButton:
-            self.tabCloseRequested.emit(self.tabAt(event.pos()))
-        super(QtGui.QTabBar, self).mouseReleaseEvent(event)
-
 class MainWindow(QtGui.QMainWindow):
 
     '''Main window:
@@ -132,12 +124,10 @@ class MainWindow(QtGui.QMainWindow):
 
     def quit(self):
         '''Clicked in File menu to exit or CTRL+Q to close main window'''
-        self.saveSession("default.ag")
         QtGui.qApp.quit()
 
     def closeEvent(self, event):
         '''Clicked [x] to close main window'''
-        self.saveSession("default.ag")
         event.accept()
 
     def setupEmptyTree(self):
@@ -163,7 +153,6 @@ class MainWindow(QtGui.QMainWindow):
     def setupCentral(self):
         '''Setup empty window supporting tabs at startup. '''
         self.central = QtGui.QTabWidget()
-        self.central.setTabBar(CustomTabBar())
         self.central.setTabsClosable(True)
         self.central.tabCloseRequested.connect(self.tabCloseRequestedHandler)
         self.central.currentChanged.connect(self.currentTabChanged)
