@@ -49,7 +49,7 @@ class PrintVisitor(object):
         node.visit(self)
 
     def visit_loop_node(self, loop):
-        print '- Loop node', loop.num
+        print('- Loop node', loop.num)
         follow = loop.get_loop_follow()
         if follow is None and not loop.looptype.endless():
             exit('Loop has no follow !', 'error')
@@ -58,12 +58,12 @@ class PrintVisitor(object):
                 loop.neg()
                 loop.true, loop.false = loop.false, loop.true
             cnd = loop.visit_cond(self)
-            print 'while(%s) {' % cnd
+            print('while(%s) {' % cnd)
         elif loop.looptype.posttest():
-            print 'do {'
+            print('do {')
             self.latch_node.append(loop.latch)
         elif loop.looptype.endless():
-            print 'while(true) {'
+            print('while(true) {')
             pass
         self.loop_follow.append(follow)
         if loop.looptype.pretest():
@@ -72,19 +72,19 @@ class PrintVisitor(object):
             self.visit_node(loop.cond)
         self.loop_follow.pop()
         if loop.looptype.pretest():
-            print '}'
+            print('}')
         elif loop.looptype.posttest():
-            print '} while(',
+            print('} while(', end=' ')
             self.latch_node.pop()
             loop.latch.visit_cond(self)
-            print ')'
+            print(')')
         else:
             self.visit_node(loop.latch)
         if follow is not None:
             self.visit_node(follow)
 
     def visit_cond_node(self, cond):
-        print '- Cond node', cond.num
+        print('- Cond node', cond.num)
         follow = cond.get_if_follow()
         if cond.false is self.loop_follow[-1]:
             cond.neg()
@@ -100,12 +100,12 @@ class PrintVisitor(object):
             self.if_follow.append(follow)
             if not cond.true in self.visited_nodes:
                 cnd = cond.visit_cond(self)
-                print 'if (%s) {' % cnd
+                print('if (%s) {' % cnd)
                 self.visit_node(cond.true)
             if is_else and not cond.false in self.visited_nodes:
-                print '} else {'
+                print('} else {')
                 self.visit_node(cond.false)
-            print '}'
+            print('}')
             self.if_follow.pop()
             self.visit_node(follow)
         else:
@@ -147,7 +147,7 @@ class PrintVisitor(object):
         self.visit_node(follow)
 
     def visit_statement_node(self, stmt):
-        print '- Statement node', stmt.num
+        print('- Statement node', stmt.num)
         sucs = self.graph.sucs(stmt)
         for ins in stmt.get_ins():
             self.visit_ins(ins)
@@ -157,7 +157,7 @@ class PrintVisitor(object):
         self.visit_node(follow)
 
     def visit_return_node(self, ret):
-        print '- Return node', ret.num
+        print('- Return node', ret.num)
         for ins in ret.get_ins():
             self.visit_ins(ins)
 
@@ -186,19 +186,19 @@ class PrintVisitor(object):
             return
         l = lhs.visit(self)
         r = rhs.visit(self)
-        print '%s = %s;' % (l, r)
+        print('%s = %s;' % (l, r))
 
     def visit_move_result(self, lhs, rhs):
         l = lhs.visit(self)
         r = rhs.visit(self)
-        print '%s = %s;' % (l, r)
+        print('%s = %s;' % (l, r))
 
     def visit_move(self, lhs, rhs):
         if lhs is rhs:
             return
         l = lhs.visit(self)
         r = rhs.visit(self)
-        print '%s = %s;' % (l, r)
+        print('%s = %s;' % (l, r))
 
     def visit_astore(self, array, index, rhs):
         arr = array.visit(self)
@@ -207,7 +207,7 @@ class PrintVisitor(object):
         else:
             idx = index.visit(self)
         r = rhs.visit(self)
-        print '%s[%s] = %s' % (arr, idx, r)
+        print('%s[%s] = %s' % (arr, idx, r))
 
     def visit_put_static(self, cls, name, rhs):
         r = rhs.visit(self)
@@ -227,11 +227,11 @@ class PrintVisitor(object):
             arg.visit(self)
 
     def visit_return_void(self):
-        print 'return;'
+        print('return;')
 
     def visit_return(self, arg):
         a = arg.visit(self)
-        print 'return %s;' % a
+        print('return %s;' % a)
 
     def visit_nop(self):
         pass
@@ -317,13 +317,13 @@ dvmethod.process() # build IR Form / control flow...
 
 graph = dvmethod.graph
 
-print 'Entry block : %s\n' % graph.get_entry()
+print('Entry block : %s\n' % graph.get_entry())
 
 for block in graph: # graph.get_rpo() to iterate in reverse post order
-    print 'Block : %s' % block
+    print('Block : %s' % block)
     for ins in block.get_ins():
-        print '  - %s' % ins
-print
+        print('  - %s' % ins)
+print()
 
 visitor = PrintVisitor(graph)
 graph.get_entry().visit(visitor)

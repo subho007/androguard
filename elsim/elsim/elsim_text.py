@@ -60,7 +60,7 @@ def filter_checksum_meth_basic( m1, sim ):
     return CheckSumText( m1, sim )
 
 def filter_sim_meth_basic( sim, m1, m2 ):
-    from similarity.similarity import XZ_COMPRESS
+    from .similarity.similarity import XZ_COMPRESS
     sim.set_compress_type( XZ_COMPRESS )
     ncd1, _ = sim.ncd( m1.checksum.get_buff(), m2.checksum.get_buff() )
     return ncd1
@@ -70,7 +70,7 @@ def filter_sim_meth_basic( sim, m1, m2 ):
     #return (ncd1 + ncd2) / 2.0
 
 def filter_sort_meth_basic( j, x, value ):
-    z = sorted(x.iteritems(), key=lambda (k,v): (v,k))
+    z = sorted(iter(x.items()), key=lambda k_v: (k_v[1],k_v[0]))
 
     if get_debug():
         for i in z:

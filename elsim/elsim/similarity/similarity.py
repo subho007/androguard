@@ -21,7 +21,7 @@ import zlib, bz2
 import math, json, re
 
 def simhash(x):
-    import simhash
+    from . import simhash
     return simhash.simhash(x)
 
 def entropy(data):
@@ -182,9 +182,9 @@ class SIMILARITYBase(object):
         self.ctype = t
 
     def show(self):
-        print "ECACHES", len(self.__ecaches)
-        print "RCACHES", self.__nb_caches( self.__rcaches )
-        print "CACHES", self.__nb_caches( self.__caches )
+        print("ECACHES", len(self.__ecaches))
+        print("RCACHES", self.__nb_caches( self.__rcaches ))
+        print("CACHES", self.__nb_caches( self.__caches ))
 
 
 class SIMILARITYNative(SIMILARITYBase):
@@ -286,7 +286,7 @@ class SIMILARITYPython(SIMILARITYBase):
     def set_compress_type(self, t):
         self.ctype = t
         if self.ctype != ZLIB_COMPRESS and self.ctype != BZ2_COMPRESS:
-            print "warning: compressor %s is not supported (use zlib default compressor)" % HR_COMPRESSOR[ t ]
+            print("warning: compressor %s is not supported (use zlib default compressor)" % HR_COMPRESSOR[ t ])
             self.ctype = ZLIB_COMPRESS
 
     def compress(self, s1):
@@ -356,7 +356,7 @@ class SIMILARITYPython(SIMILARITYBase):
             a,b = b,a
             n,m = m,n
 
-        current = range(n+1)
+        current = list(range(n+1))
         for i in range(1,m+1):
             previous, current = current, [i]+[0]*n
             for j in range(1,n+1):
@@ -430,7 +430,7 @@ class DBFormat(object):
             with open(self.filename, "r+") as fd:
                 self.D = json.load( fd )
         except IOError:
-            print "Impossible to open filename: " + filename
+            print("Impossible to open filename: " + filename)
             self.D = {}
 
         self.H = {}
@@ -447,8 +447,8 @@ class DBFormat(object):
                 for k in self.D[i][j]:
                     if isinstance(self.D[i][j][k], dict):
                         self.H[i][j][k] = set()
-                        for e in self.D[i][j][k].keys():
-                            self.H[i][j][k].add( long(e) )
+                        for e in list(self.D[i][j][k].keys()):
+                            self.H[i][j][k].add( int(e) )
 
     def add_name(self, name, value):
         if name not in self.D:
@@ -523,11 +523,11 @@ class DBFormat(object):
 
     def show(self):
         for i in self.D:
-            print i, ":"
+            print(i, ":")
             for j in self.D[i]:
-                print "\t", j, len(self.D[i][j])
+                print("\t", j, len(self.D[i][j]))
                 for k in self.D[i][j]:
-                    print "\t\t", k, len(self.D[i][j][k])
+                    print("\t\t", k, len(self.D[i][j][k]))
 
     def save(self):
         with open(self.filename, "w") as fd:

@@ -20,66 +20,66 @@ def display_CFG(a, x, classes):
     for method in a.get_methods():
         g = x.get_method( method )
 
-        print method.get_class_name(), method.get_name(), method.get_descriptor()
+        print(method.get_class_name(), method.get_name(), method.get_descriptor())
         for i in g.basic_blocks.get():
-            print "\t %s %x %x" % (i.name, i.start, i.end), '[ NEXT = ', ', '.join( "%x-%x-%s" % (j[0], j[1], j[2].get_name()) for j in i.childs ), ']', '[ PREV = ', ', '.join( j[2].get_name() for j in i.fathers ), ']'
+            print("\t %s %x %x" % (i.name, i.start, i.end), '[ NEXT = ', ', '.join( "%x-%x-%s" % (j[0], j[1], j[2].get_name()) for j in i.childs ), ']', '[ PREV = ', ', '.join( j[2].get_name() for j in i.fathers ), ']')
 
 
 def display_STRINGS(a, x, classes):
-    print "STRINGS"
+    print("STRINGS")
     for s, _ in x.get_tainted_variables().get_strings():
-        print "String : ", repr(s.get_info())
+        print("String : ", repr(s.get_info()))
         analysis.show_PathVariable( a, s.get_paths() )
 
 def display_FIELDS(a, x, classes):
-    print "FIELDS"
+    print("FIELDS")
     for f, _ in x.get_tainted_variables().get_fields():
-        print "field : ", repr(f.get_info())
+        print("field : ", repr(f.get_info()))
         analysis.show_PathVariable( a, f.get_paths() )
 
 def display_PACKAGES(a, x, classes):
-    print "CREATED PACKAGES"
+    print("CREATED PACKAGES")
     for m, _ in x.get_tainted_packages().get_packages():
       m.show()
 
 def display_PACKAGES_II(a, x, classes):
 # Internal Methods -> Internal Methods
-    print "Internal --> Internal"
+    print("Internal --> Internal")
     for j in x.get_tainted_packages().get_internal_packages():
       analysis.show_Path( a, j )
 
 def display_PACKAGES_IE(a, x, classes):
 # Internal Methods -> External Methods
-    print "Internal --> External"
+    print("Internal --> External")
     for j in x.get_tainted_packages().get_external_packages():
       analysis.show_Path( a, j )
 
 def display_SEARCH_PACKAGES(a, x, classes, package_name):
-    print "Search package", package_name
+    print("Search package", package_name)
     analysis.show_Paths( a, x.get_tainted_packages().search_packages( package_name ) )
 
 def display_SEARCH_METHODS(a, x, classes, package_name, method_name, descriptor):
-    print "Search method", package_name, method_name, descriptor
+    print("Search method", package_name, method_name, descriptor)
     analysis.show_Paths( a, x.get_tainted_packages().search_methods( package_name, method_name, descriptor) )
 
 def display_PERMISSION(a, x, classes):
     # Show methods used by permission
     perms_access = x.get_tainted_packages().get_permissions( [] )
     for perm in perms_access:
-        print "PERM : ", perm
+        print("PERM : ", perm)
         analysis.show_Paths( a, perms_access[ perm ] )
 
 def display_OBJECT_CREATED(a, x, class_name):
-    print "Search object", class_name
+    print("Search object", class_name)
     analysis.show_Paths( a, x.get_tainted_packages().search_objects( class_name ) )
 
 a = AndroguardS( TEST )
 x = analysis.uVMAnalysis( a.get_vm() )
 
 #print a.get_vm().get_strings()
-print a.get_vm().get_regex_strings( "access" )
-print a.get_vm().get_regex_strings( "(long).*2" )
-print a.get_vm().get_regex_strings( ".*(t\_t).*" )
+print(a.get_vm().get_regex_strings( "access" ))
+print(a.get_vm().get_regex_strings( "(long).*2" ))
+print(a.get_vm().get_regex_strings( ".*(t\_t).*" ))
 
 classes = a.get_vm().get_classes_names()
 vm = a.get_vm()

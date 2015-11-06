@@ -17,7 +17,7 @@ class Nop(dvm.Instruction10x):
 def patch_dex( m ):
     for i in m.get_methods():
         if i.get_class_name() == "Lorg/dexlabs/poc/dexdropper/DropActivity;":
-            print i.get_class_name(), i.get_name()
+            print(i.get_class_name(), i.get_name())
 
             patch_method_3( i )
             # or

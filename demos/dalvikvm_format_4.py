@@ -24,7 +24,7 @@ j.set_decompiler( d )
 # SHOW METHODS
 for i in j.get_methods():
     if i.get_name() == "onCreate":
-        print i.get_class_name(), i.get_name()
+        print(i.get_class_name(), i.get_name())
         i.source()
 
 #    if i.get_name() == "testWhileTrue":

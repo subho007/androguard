@@ -22,14 +22,14 @@ class hashtype(object):
         return str(self.hash)
     
     def __long__(self):
-        return long(self.hash)
+        return int(self.hash)
 
     def __float__(self):
         return float(self.hash)
         
     def __cmp__(self, other):
-        if self.hash < long(other): return -1
-        if self.hash > long(other): return 1
+        if self.hash < int(other): return -1
+        if self.hash > int(other): return 1
         return 0
     
     def hex(self):

@@ -5,7 +5,7 @@ import sys
 PATH_INSTALL = "./libelsign"
 sys.path.append(PATH_INSTALL)
 
-from libelsign import libelsign
+from .libelsign import libelsign
 #from libelsign import libelsign2 as libelsign
 
 SIGNS = [
@@ -45,15 +45,15 @@ es.set_ncd_compression_algorithm( 5 )
 
 for i in range(0, len(SIGNS)):
     id = es.add_signature( SIGNS[i][0], SIGNS[i][1], SIGNS[i][2:] )
-    print SIGNS[i], id
+    print(SIGNS[i], id)
     HSIGNS[id] = i
 
 for i in range(0, len(ELEMS)):
     id = es.add_element( ELEMS[i][1], ELEMS[i][0] )
-    print ELEMS[i], id
+    print(ELEMS[i], id)
     HELEMS[id] = i
 
-print es.check()
+print(es.check())
 
 dt = es.get_debug()
 debug_nb_sign = dt[0]
@@ -62,5 +62,5 @@ debug_nb_cmp_clusters = dt[2]
 debug_nb_elements = dt[3]
 debug_nb_cmp_elements = dt[4]
 debug_nb_cmp_max = debug_nb_sign * debug_nb_elements
-print "[SIGN:%d CLUSTERS:%d CMP_CLUSTERS:%d ELEMENTS:%d CMP_ELEMENTS:%d" % (debug_nb_sign, debug_nb_clusters, debug_nb_cmp_clusters, debug_nb_elements, debug_nb_cmp_elements),
-print "-> %d %f%%]" % (debug_nb_cmp_max, ((debug_nb_cmp_elements/float(debug_nb_cmp_max)) * 100) )
+print("[SIGN:%d CLUSTERS:%d CMP_CLUSTERS:%d ELEMENTS:%d CMP_ELEMENTS:%d" % (debug_nb_sign, debug_nb_clusters, debug_nb_cmp_clusters, debug_nb_elements, debug_nb_cmp_elements), end=' ')
+print("-> %d %f%%]" % (debug_nb_cmp_max, ((debug_nb_cmp_elements/float(debug_nb_cmp_max)) * 100) ))

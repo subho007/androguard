@@ -57,8 +57,8 @@ for i in os.walk( TEST ):
     for j in i[2]:
         l.append( i[0] + j )
 
-print len(l), l
+print(len(l), l)
 
 _a = androguard.Androguard( l )
 
-print "MEMORY : ", memory() / _scale["MB"], "RESIDENT ", resident() / _scale["MB"], "STACKSIZE ", stacksize() / _scale["MB"]
+print("MEMORY : ", memory() / _scale["MB"], "RESIDENT ", resident() / _scale["MB"], "STACKSIZE ", stacksize() / _scale["MB"])

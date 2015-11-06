@@ -66,7 +66,7 @@ def test(got, expected, fcmp):
         prefix = '  X '
 
     if DEBUG:
-        print '%s got: %s expected: %s' % (prefix, repr(got), repr(expected))
+        print('%s got: %s expected: %s' % (prefix, repr(got), repr(expected)))
 
     return CONVERT_RESULT_TEST[ prefix ]
 
@@ -103,13 +103,13 @@ def print_timing(func):
         t1 = time.time()
         res = func(*arg)
         t2 = time.time()
-        print '-> %0.8f s' % ((t2-t1))
+        print('-> %0.8f s' % ((t2-t1)))
         return res
     return wrapper
 
 @print_timing
 def Idempotency( n, TESTS_TEXT ):
-    print "Idempotency ",
+    print("Idempotency ", end=' ')
     j = 0
     res = 0
     cc = 0
@@ -120,11 +120,11 @@ def Idempotency( n, TESTS_TEXT ):
         cc += c2
         res += r
         j += 1
-    print res, "/", j, cc,
+    print(res, "/", j, cc, end=' ')
 
 @print_timing
 def Monotonicity( n, TESTS_TEXT ):
-    print "Monotonicity ",
+    print("Monotonicity ", end=' ')
     j = 0
     res = 0
     cc = 0
@@ -136,12 +136,12 @@ def Monotonicity( n, TESTS_TEXT ):
         res += r
         j += 1
 
-    print res, "/", j, cc,
+    print(res, "/", j, cc, end=' ')
 
 
 @print_timing
 def Symetry( n, TESTS_TEXT ):
-    print "Symetry ",
+    print("Symetry ", end=' ')
     j = 0
     res = 0
     cc = 0
@@ -153,11 +153,11 @@ def Symetry( n, TESTS_TEXT ):
         res += r
         j += 1
 
-    print res, "/", j, cc,
+    print(res, "/", j, cc, end=' ')
 
 @print_timing
 def Distributivity( n, TESTS_TEXT ):
-    print "Distributivity ",
+    print("Distributivity ", end=' ')
     j = 0
     cc = 0
     res = 0
@@ -169,19 +169,19 @@ def Distributivity( n, TESTS_TEXT ):
         res += r
         j += 1
 
-    print res, "/", j, cc,
+    print(res, "/", j, cc, end=' ')
 
 def TestNCDPermutations(n, ref, threshold):
     tres, nb, idx, t = benchmark(n.ncd, ref, threshold, lambda x, y : x <= y)
-    print "NCD Permutation %f threshold=%f time=%fs for %d/%d" % ( tres, threshold, t, nb, idx )
+    print("NCD Permutation %f threshold=%f time=%fs for %d/%d" % ( tres, threshold, t, nb, idx ))
 
 def TestNCSPermutations(n, ref, threshold):
     tres, nb, idx, t = benchmark(n.ncs, ref, threshold, lambda x, y : x >= y)
-    print "NCS Permutation %f threshold=%f time=%fs for %d/%d" % ( tres, threshold, t, nb, idx )
+    print("NCS Permutation %f threshold=%f time=%fs for %d/%d" % ( tres, threshold, t, nb, idx ))
 
 def TestCMIDPermutations(n, ref, threshold):
     tres, nb, idx, t = benchmark(n.cmid, ref, threshold, lambda x, y : x >= y)
-    print "CMID Permutation %f threshold=%f time=%fs for %d/%d" % ( tres, threshold, t, nb, idx )
+    print("CMID Permutation %f threshold=%f time=%fs for %d/%d" % ( tres, threshold, t, nb, idx ))
 
 def TestNCD( n, tests, type_test ):
     TestSim("NCD", tests, type_test, n.ncd)
@@ -195,20 +195,20 @@ def TestCMID( n, tests, type_test ):
 def TestCMID2( n ):
     x = "HI WORLD"
     y = "B[I]B[RF1]B[F0S]B[IF1]B[]B[]B[S]B[SS]B[RF0]B[]B[SP0I]B[GP1]B[SP0IP0F0P1]B[GS]B[F1]B[RP0]B[IF0P1S]B[P1]"
-    print n.cmid( x, y )
+    print(n.cmid( x, y ))
 
 def TestSim(type_sim, tests, type_test, func):
-    print type_sim, type_test
+    print(type_sim, type_test)
     nb = 0
 
-    print "\t",
+    print("\t", end=' ')
     t1 = time.clock()
     for i in tests:
         val, _ = func( i[0], i[1] )
-        print "%d:%f" % (nb, val),
+        print("%d:%f" % (nb, val), end=' ')
         nb += 1
     t2 = time.clock()
-    print "%fs" % (t2 - t1)
+    print("%fs" % (t2 - t1))
 
 def benchmark(func, ref, threshold, fcmp):
     nb = 0
@@ -243,11 +243,11 @@ def TestEntropy(n, tests, diff):
     nb = 0
     t1 = time.clock()
     for i in tests:
-        print n.entropy(i[0])[0], entropy(i[0])
-        print n.entropy(i[1])[0], entropy(i[1])
+        print(n.entropy(i[0])[0], entropy(i[0]))
+        print(n.entropy(i[1])[0], entropy(i[1]))
         nb += test( n.entropy(i[0])[0], n.entropy(i[1])[0], lambda x, y : (max(x,y) - min(x,y)) <= diff )
     t2 = time.clock()
-    print "* Entropy %fs %d/%d" % (t2 - t1, nb, len(tests))
+    print("* Entropy %fs %d/%d" % (t2 - t1, nb, len(tests)))
 
 def TestProperties(n, data):
     # Properties
@@ -258,7 +258,7 @@ def TestProperties(n, data):
 
 def TestSmallString(n, data):
     for i in data:
-        print i, n.ncd( i[0], i[1] )
+        print(i, n.ncd( i[0], i[1] ))
 
 def RandomData():
     l = []
@@ -275,10 +275,10 @@ def _TestRDTSC(n, m):
     return t1 - t0
 
 def TestRDTSC(n):
-    print _TestRDTSC(n, 1)
-    print _TestRDTSC(n, 10)
-    print _TestRDTSC(n, 100)
-    print _TestRDTSC(n, 1000)
+    print(_TestRDTSC(n, 1))
+    print(_TestRDTSC(n, 10))
+    print(_TestRDTSC(n, 100))
+    print(_TestRDTSC(n, 1000))
 
 def TestBenett(n):
     X = "B[P0{Ljava/util/Formatter;}P1{Ljava/util/Formatter;<init>()V}P2P2P0{Ljava/lang/StringBuilder;}P1{Ljava/lang/String;valueOf(Ljava/lang/Object;)Ljava/lang/String;}P1{Ljava/lang/StringBuilder;<init>(Ljava/lang/String;)V}P1{Ljava/lang/StringBuilder;append(Ljava/lang/String;)Ljava/lang/StringBuilder;}P1{Ljava/lang/StringBuilder;append(I)Ljava/lang/StringBuilder;}P1{Ljava/lang/StringBuilder;toString()Ljava/lang/String;}P1{Ljava/util/Formatter;format(Ljava/lang/String; [Ljava/lang/Object;)Ljava/util/Formatter;}P1{Ljava/util/Formatter;toString()Ljava/lang/String;}P1{Ljava/lang/String;getBytes()[B}P2P0{Ljava/net/URL;}P1{Ljava/net/URL;<init>(Ljava/lang/String;)V}P1{Ljava/net/URL;openConnection()Ljava/net/URLConnection;}P1{Ljava/net/HttpURLConnection;setDoOutput(Z)V}P1{Ljava/net/HttpURLConnection;setDoInput(Z)V}P1{Ljava/net/HttpURLConnection;setRequestMethod(Ljava/lang/String;)V}P1{Ljava/net/HttpURLConnection;getOutputStream()Ljava/io/OutputStream;}P0{Ljava/io/ByteArrayInputStream;}P1{Ljava/io/ByteArrayInputStream;<init>([B)V}P1{Ljava/io/ByteArrayInputStream;read([B II)I}I]B[P1{Ljava/io/ByteArrayInputStream;close()V}P1{Ljava/io/OutputStream;close()V}P0{Ljava/io/ByteArrayOutputStream;}P1{Ljava/io/ByteArrayOutputStream;<init>()V}P0{Ljava/io/BufferedInputStream;}P1{Ljava/net/HttpURLConnection;getInputStream()Ljava/io/InputStream;}P1{Ljava/io/BufferedInputStream;<init>(Ljava/io/InputStream;)V}P1{Ljava/io/InputStream;read([BII)I}I]B[P1{Ljava/io/InputStream;close()V}P1{Ljava/io/ByteArrayOutputStream;size()I}I]B[P1{Landroid/content/Context;getSharedPreferences(Ljava/lang/String;I)Landroid/content/SharedPreferences;}P1{Landroid/content/SharedPreferences;edit()Landroid/content/SharedPreferences$Editor;}P1{Landroid/content/SharedPreferences$Editor;putInt(Ljava/lang/String;I)Landroid/content/SharedPreferences$Editor;}P1{Landroid/content/SharedPreferences$Editor;commit()Z}]B[R]B[P1{Ljava/io/OutputStream;write([BII)V}P1{Ljava/io/OutputStream;flush()V}G]B[P1{Ljava/io/ByteArrayOutputStream;write([B I I)V}G]"
@@ -300,9 +300,9 @@ def TestReorg( n ):
 	"B[R]",
 	"B[P1{Ljava/io/OutputStream;write([BII)V}P1{Ljava/io/OutputStream;flush()V}G]B[P1{Ljava/io/ByteArrayOutputStream;write([B I I)V}G]" ]
 
-    print n.ncd("".join(j for j in X), "".join(j for j in X))
+    print(n.ncd("".join(j for j in X), "".join(j for j in X)))
     for i in itertools.permutations( X, len(X) ):
-        print n.ncd("".join(j for j in X), "".join(j for j in i))
+        print(n.ncd("".join(j for j in X), "".join(j for j in i)))
 
 TESTS = { "ZLIB"        : ZLIB_COMPRESS,
           "BZ2"         : BZ2_COMPRESS,
@@ -332,7 +332,7 @@ if __name__ == "__main__":
 
     for i in TESTS:
         n.set_compress_type( TESTS[i] )
-        print "* ", i
+        print("* ", i)
 
         TestReorg( n )
         #TestProperties( n, TESTS_RANDOM_SIGN )
@@ -361,7 +361,7 @@ if __name__ == "__main__":
         #TestCMIDPermutations( n, "Androgu", 0.8 )
         #n.clear_caches()
 
-        print
+        print()
 #      for j in range(1, 10):
 #         n.set_level( j )
 #         print "level", j,

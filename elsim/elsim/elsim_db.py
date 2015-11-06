@@ -20,7 +20,7 @@
 
 import re
 
-from similarity.similarity import DBFormat, simhash
+from .similarity.similarity import DBFormat, simhash
 from androguard.core.analysis import analysis
 
 DEFAULT_SIGNATURE = analysis.SIGNATURE_SEQUENCE_BB
@@ -93,7 +93,7 @@ class ElsimDB(object):
               buff_list = vmx.get_method_signature( method, predef_sign = DEFAULT_SIGNATURE ).get_list()
 
               for i in buff_list:
-                  elem_hash = long(simhash( i ))
+                  elem_hash = int(simhash( i ))
                   elems_hash.add( elem_hash )
 
       ret, info = self.db.elems_are_presents( elems_hash )
@@ -138,7 +138,7 @@ class ElsimDB(object):
               buff_list = self.vmx.get_method_signature( method, predef_sign = DEFAULT_SIGNATURE ).get_list()
 
               for i in buff_list:
-                  elem_hash = long(simhash( i ))
+                  elem_hash = int(simhash( i ))
                   elems_hash.add( elem_hash )
 
               class_size += method.get_length()
@@ -176,7 +176,7 @@ class ElsimDB(object):
               buff_list = self.vmx.get_method_signature( method, predef_sign = DEFAULT_SIGNATURE ).get_list()
 
               for i in buff_list:
-                  elem_hash = long(simhash( i ))
+                  elem_hash = int(simhash( i ))
                   elems_hash.add( elem_hash )
 
           ret = self.db.elems_are_presents( elems_hash )
@@ -221,7 +221,7 @@ class ElsimDBIn(object):
         if re.match(regexp_exclude_pattern, _class.get_name()) != None:
             continue
 
-    print "\t", _class.get_name()
+    print("\t", _class.get_name())
     for method in _class.get_methods():
         code = method.get_code()
         if code == None:
@@ -235,7 +235,7 @@ class ElsimDBIn(object):
             continue
 
         for e in buff_list:
-            self.db.add_element( name, sname, _class.get_name(), method.get_length(), long(simhash(e)) )
+            self.db.add_element( name, sname, _class.get_name(), method.get_length(), int(simhash(e)) )
 
   def save(self):
     self.db.save()

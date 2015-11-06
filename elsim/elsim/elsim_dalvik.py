@@ -91,7 +91,7 @@ def filter_sim_meth_basic( sim, m1, m2 ):
 #    return (ncd1 + ncd2) / 2.0
 
 def filter_sort_meth_basic( j, x, value ):
-    z = sorted(x.iteritems(), key=lambda (k,v): (v,k))
+    z = sorted(iter(x.items()), key=lambda k_v1: (k_v1[1],k_v1[0]))
 
     if get_debug():
         for i in z:
@@ -222,13 +222,13 @@ class DiffBB(object):
                 i.childs = childs
 
     def show(self):
-        print "\tADD INSTRUCTIONS :"
+        print("\tADD INSTRUCTIONS :")
         for i in self.di.add_ins:
-            print "\t\t", i[0], i[1], i[2].get_name(), i[2].get_output()
+            print("\t\t", i[0], i[1], i[2].get_name(), i[2].get_output())
 
-        print "\tREMOVE INSTRUCTIONS :"
+        print("\tREMOVE INSTRUCTIONS :")
         for i in self.di.remove_ins:
-            print "\t\t", i[0], i[1], i[2].get_name(), i[2].get_output()
+            print("\t\t", i[0], i[1], i[2].get_name(), i[2].get_output())
 
 class NewBB(object):
     def __init__(self, bb):
@@ -327,7 +327,7 @@ class Method(object):
                     for b2 in bb2:
                         b_z[ b2 ] = func_sim_bb( bb1[ b1 ], bb2[ b2 ], self.sim )
 
-                sorted_bb = sorted(b_z.iteritems(), key=lambda (k,v): (v,k))
+                sorted_bb = sorted(iter(b_z.items()), key=lambda k_v: (k_v[1],k_v[0]))
 
                 debug("\t\t%s" %  sorted_bb[:2])
 
@@ -419,32 +419,32 @@ class Method(object):
         return self.m.get_code().get_length()
 
     def show(self, details=False, exclude=[]):
-        print self.m.get_class_name(), self.m.get_name(), self.m.get_descriptor(),
-        print "with",
+        print(self.m.get_class_name(), self.m.get_name(), self.m.get_descriptor(), end=' ')
+        print("with", end=' ')
 
         for i in self.sort_h:
-            print i[0].m.get_class_name(), i[0].m.get_name(), i[0].m.get_descriptor(), i[1]
+            print(i[0].m.get_class_name(), i[0].m.get_name(), i[0].m.get_descriptor(), i[1])
 
-        print "\tDIFF BASIC BLOCKS :"
+        print("\tDIFF BASIC BLOCKS :")
         for d in self.dbb:
-            print "\t\t", self.dbb[d].bb1.name, " --->", self.dbb[d].bb2.name, ":", self.dbb[d].info[1]
+            print("\t\t", self.dbb[d].bb1.name, " --->", self.dbb[d].bb2.name, ":", self.dbb[d].info[1])
             if details:
                 self.dbb[d].show()
 
-        print "\tNEW BASIC BLOCKS :"
+        print("\tNEW BASIC BLOCKS :")
         for b in self.nbb:
-            print "\t\t", self.nbb[b].name
+            print("\t\t", self.nbb[b].name)
 
         # show diff !
         if details:
             bytecode.PrettyShow2( self.bbs, exclude )
 
     def show2(self, details=False):
-        print self.m.get_class_name(), self.m.get_name(), self.m.get_descriptor(),
-        print self.get_length()
+        print(self.m.get_class_name(), self.m.get_name(), self.m.get_descriptor(), end=' ')
+        print(self.get_length())
 
         for i in self.sort_h:
-            print "\t", i[0].m.get_class_name(), i[0].m.get_name(), i[0].m.get_descriptor(), i[1]
+            print("\t", i[0].m.get_class_name(), i[0].m.get_name(), i[0].m.get_descriptor(), i[1])
 
         if details:
             bytecode.PrettyShow1( self.mx.basic_blocks.get() )
@@ -467,13 +467,13 @@ class BasicBlock(object):
         return self.bb.name
 
     def show(self):
-        print self.bb.name
+        print(self.bb.name)
 
 def filter_element_bb_basic(el, e):
     return BasicBlock( el )
 
 def filter_sort_bb_basic( j, x, value ):
-    z = sorted(x.iteritems(), key=lambda (k,v): (v,k))
+    z = sorted(iter(x.items()), key=lambda k_v2: (k_v2[1],k_v2[0]))
 
     if get_debug():
         for i in z:
@@ -560,7 +560,7 @@ def filter_sim_meth_string( sim, m1, m2 ):
     return ncd1
 
 def filter_sort_meth_string( j, x, value ):
-    z = sorted(x.iteritems(), key=lambda (k,v): (v,k))
+    z = sorted(iter(x.items()), key=lambda k_v3: (k_v3[1],k_v3[0]))
 
     if get_debug():
         for i in z:
@@ -684,7 +684,7 @@ class DiffInstruction(object):
         self.ins = instruction[2]
 
     def show(self):
-        print hex(self.bb.bb.start + self.offset), self.pos_instruction, self.ins.get_name(), self.ins.show_buff( self.bb.bb.start + self.offset )
+        print(hex(self.bb.bb.start + self.offset), self.pos_instruction, self.ins.get_name(), self.ins.show_buff( self.bb.bb.start + self.offset ))
 
 class DiffBasicBlock(object):
     def __init__(self, x, y, added, deleted):
@@ -766,7 +766,7 @@ class DiffDalvikMethod(object):
         return m.m.get_class_name(), m.m.get_name(), m.m.get_descriptor()
 
     def show(self):
-        print "[", self.get_info_method(self.m1), "]", "<->", "[", self.get_info_method(self.m2), "]"
+        print("[", self.get_info_method(self.m1), "]", "<->", "[", self.get_info_method(self.m2), "]")
 
         self.eld.show()
 
@@ -775,15 +775,15 @@ class DiffDalvikMethod(object):
 
     def _show_elements(self, info, elements):
         for i in elements:
-            print i.bb, hex(i.bb.get_start()), hex(i.bb.get_end()) #, i.bb.childs
+            print(i.bb, hex(i.bb.get_start()), hex(i.bb.get_end())) #, i.bb.childs
             idx = i.bb.get_start()
             for j in i.bb.get_instructions():
-                print "\t" + info, hex(idx),
+                print("\t" + info, hex(idx), end=' ')
                 j.show(idx)
-                print
+                print()
                 idx += j.get_length()
 
-        print "\n"
+        print("\n")
 
 
 

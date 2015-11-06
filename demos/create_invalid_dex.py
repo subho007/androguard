@@ -17,9 +17,9 @@ androconf.set_debug()
 
 vm = dvm.DalvikVMFormat(read(FILENAME_INPUT))
 
-print hex(vm.header.link_off), hex(vm.header.link_size)
+print(hex(vm.header.link_off), hex(vm.header.link_size))
 vm.header.link_off, vm.header.link_size = 0x41414141, 0x1337
-print hex(vm.header.link_off), hex(vm.header.link_size)
+print(hex(vm.header.link_off), hex(vm.header.link_size))
 
 new_dex = vm.save()
 

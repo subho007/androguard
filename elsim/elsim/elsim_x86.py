@@ -71,7 +71,7 @@ def filter_sim_meth_basic( sim, m1, m2 ):
     return ncd2
 
 def filter_sort_meth_basic( j, x, value ):
-    z = sorted(x.iteritems(), key=lambda (k,v): (v,k))
+    z = sorted(iter(x.items()), key=lambda k_v: (k_v[1],k_v[0]))
 
     if get_debug():
         for i in z:
